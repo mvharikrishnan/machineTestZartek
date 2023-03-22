@@ -30,6 +30,7 @@ class LoginPageButton extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 20,
+                backgroundColor: Colors.transparent,
                 child: Image.asset(
                   leadingImage,
                 ),

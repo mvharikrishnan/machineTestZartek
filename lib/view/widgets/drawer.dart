@@ -2,16 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:zartek_machine_test/constants/colors.dart';
+import 'package:zartek_machine_test/controller/homeController.dart';
 import 'package:zartek_machine_test/services/auth_service.dart';
 import 'package:zartek_machine_test/view/screens/loginScreen.dart';
 
 class DrawerWidget extends StatelessWidget {
-  const DrawerWidget({super.key});
-
+  DrawerWidget({super.key});
+  final HomePageController homePageController = Get.find<HomePageController>();
   @override
   Widget build(BuildContext context) {
+    homePageController.getCurrentUser;
+    homePageController.getCurrentUserID;
+    Map<dynamic, dynamic> _userData = homePageController.userData;
+    String uid = homePageController.currentUserid.value;
     return Drawer(
-      child: Column(
+        child: Obx(
+      () => Column(
         children: [
           Container(
             height: 25.h,
@@ -28,9 +34,12 @@ class DrawerWidget extends StatelessWidget {
                 CircleAvatar(
                   radius: 5.h,
                   backgroundColor: Colors.black,
+                  backgroundImage: AssetImage("assets/logo/dummy-profile-pic.png"),
                 ),
                 Text(
-                  "NAME",
+                  _userData['googleName'] ??
+                      _userData['phoneNumber'] ??
+                      " No name",
                   style: TextStyle(
                     fontSize: 5.w,
                     color: kBlack,
@@ -40,18 +49,20 @@ class DrawerWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "ID: ",
+                      "ID :",
                       style: TextStyle(
                         fontSize: 5.w,
                         color: kBlack,
                       ),
                     ),
                     Text(
-                      "84656",
+                      uid,
                       style: TextStyle(
-                        fontSize: 5.w,
+                        fontSize: 3.w,
                         color: kBlack,
                       ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 )
@@ -71,6 +82,6 @@ class DrawerWidget extends StatelessWidget {
           )
         ],
       ),
-    );
+    ));
   }
 }

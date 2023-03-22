@@ -1,6 +1,8 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:zartek_machine_test/model/categoryDishModel.dart';
 import 'package:zartek_machine_test/model/productModel.dart';
 
@@ -13,6 +15,10 @@ class HomePageController extends GetxController {
   RxInt currentTabIndex = 0.obs;
   RxBool isLoading = false.obs;
   RxBool isFiltered = false.obs;
+  RxMap<dynamic, dynamic> userData = {}.obs;
+  RxString currentUserid = "90099".obs;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   Services services = Services();
   getdata() async {
@@ -27,6 +33,8 @@ class HomePageController extends GetxController {
     } catch (e) {
       log("Error WHile");
     }
+    getCurrentUser();
+    getCurrentUserID();
   }
 
   getTabTitles() {
@@ -49,5 +57,25 @@ class HomePageController extends GetxController {
       categoryDishList.add(item);
     }
     isFiltered.value = false;
+  }
+
+  getCurrentUser() async {
+    final user = _auth.currentUser;
+    log("Get Current User Called");
+    final googleName = await getGoogleName() ?? '';
+    final phoneNumber = user?.phoneNumber ?? '';
+    userData.value = {'phoneNumber': phoneNumber, 'googleName': googleName};
+    log(userData.value.toString());
+  }
+
+  Future<String?> getGoogleName() async {
+    final user = await _googleSignIn.signInSilently();
+    return user?.displayName;
+  }
+
+  getCurrentUserID() async {
+    final user = _auth.currentUser;
+    currentUserid.value = user?.uid ?? "UID";
+    log("UID $currentUserid");
   }
 }

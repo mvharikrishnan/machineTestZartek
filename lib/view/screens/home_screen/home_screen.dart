@@ -16,7 +16,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     homePageController.getdata();
-    // homePageController.fetchCategoryList();
+    // homePageController.getCurrentUser;
+    // homePageController.getCurrentUserID;
     return Obx(() => homePageController.isLoading.value
         ? Scaffold(
             appBar: AppBar(
@@ -30,7 +31,7 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
             // body: Body(),
-            drawer: const DrawerWidget(),
+            drawer: DrawerWidget(),
           )
         : DefaultTabController(
             length: homePageController.tableMenuTitleList.length,
@@ -68,7 +69,7 @@ class HomeScreen extends StatelessWidget {
                   return BodyViewWidget();
                 }).toList(),
               ),
-              drawer: const DrawerWidget(),
+              drawer: DrawerWidget(),
             ),
           ));
   }
